@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CapstoneProject</title>
+	<style type="text/css">
+		
+
+		
+		table {
+			border-collapse: collapse;
+			border: 1px solid black;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		table, th, td {
+			padding: 30px; 			
+		}
+
+		table, th {
+			width: 70px;
+		}
+
+		th {
+			background: #000;
+			border: 2px groove white;
+			padding-left: 100px;
+			padding-right: 100px;
+			font-size: 20px;
+			color: white;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		tr {
+			background: #fff;
+			border: 2px groove white;
+			font-size: 20px;
+			font-family: Arial;
+		}
+
+
+	</style>
+</head>
+<body>
+	<h1 align="center">Famous Hollywood actors </h1>
+<table id="actors">
+	<tr>
+		<th>ID</th>
+		<th>First name</th>
+		<th>Last name</th>
+		<th>Age</th>
+		<th>Gender</th>
+	</tr>
+	{% for d in data %}
+	<tr>
+		<td>{{ d.id}}</td>
+		<td>{{ d.first_name }}</td>
+		<td>{{ d.last_name }}</td>
+		<td>{{ d.age }}</td>
+		<td>{{ d.gender }}</td>
+	</tr>
+	{% endfor %}
+</table>
+</body>
+</html>

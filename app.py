@@ -39,14 +39,14 @@ def create_app(test_config=None):
   	list_actors = [act.format() for act in actors]
   	
   	# Jsonified data return
-  	return jsonify({
+  	'''return jsonify({
   		"success": True,
   		"actors": list_actors
-  		})
+  		})'''
 	
 
 	# Displaying data using templates
-	#return render_template('index.html', data=Actor.query.order_by(Actor.id).all())
+	return render_template('index.html', data=Actor.query.order_by(Actor.id).all())
 
   @app.route('/actors', methods = ['POST'])
   @requires_auth(permission='post:actors')
@@ -82,14 +82,14 @@ def create_app(test_config=None):
   		abort(404)
 
   	# Jsonified data return
-  	
+  	'''
   	return jsonify({
   		"success": True,
   		"actor": actor.format()
-  		})
+  		})'''
 
 	# Displaying data using templates
-	#return render_template('index.html', data=Actor.query.filter(Actor.id == id).one_or_none())
+	return render_template('index.html', data=Actor.query.filter(Actor.id == id).one_or_none())
 
 
   # Delete actor by id

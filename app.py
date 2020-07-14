@@ -25,7 +25,7 @@ def create_app(test_config=None):
 
   @app.route('/', methods = ['GET'])
   def main_page():
-  	return render_template('main.html')
+  	return jsonify("Healthy")
   # Actors' section
   
   # List of all actors

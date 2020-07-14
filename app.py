@@ -42,10 +42,6 @@ def create_app(test_config=None):
   		"success": True,
   		"actors": list_actors
   		})
-	
-
-	# Displaying data using templates
-	#return render_template('index.html', data=Actor.query.order_by(Actor.id).all())
 
   @app.route('/actors', methods = ['POST'])
   @requires_auth(permission='post:actors')
@@ -86,9 +82,6 @@ def create_app(test_config=None):
   		"success": True,
   		"actor": actor.format()
   		})
-
-	# Displaying data using templates
-	#return render_template('index.html', data=Actor.query.filter(Actor.id == id).one_or_none())
 
 
   # Delete actor by id
@@ -158,10 +151,6 @@ def create_app(test_config=None):
   		"success": True,
   		"movies": list_of_all_movies
   		})
-  	
-  	
-  	# Displaying data using templates
-  	# return render_template('movies.html', data=movies)
 
   # Posting a movie
   @app.route('/movies', methods = ['POST'])

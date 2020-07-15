@@ -123,7 +123,7 @@ Once your app is deployed, run migrations by running:  `heroku run python manage
 
 ## API Documentation
 
--   To see API endpoints navigate to [API Endpoints]()
+-   To see API endpoints navigate to [API Endpoints](https://github.com/SokhibjonZamonov/FSND-Capstone-Project/blob/master/API_README.md)
 
 ### Role Based Access
 

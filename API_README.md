@@ -14,6 +14,7 @@
     GET /actors
  - Gets a list of data in actors table
  - Authorization is required
+ ```
 { 
 	  "actors": [
 	  {
@@ -32,6 +33,8 @@
 						    }
 				]
 }
+
+```
 
  ```
 GET /actors/<ind:id>
@@ -66,7 +69,7 @@ POST /actors
     GET /movies
  - Gets a list of  data in movies table
  - Authorization is required
-
+```
 {
 
 "movies": [
@@ -84,6 +87,7 @@ POST /actors
 "release_date": "Mon, 14 Jul 2008 00:00:00 GMT"
 
 }
+```
 
  ```
 GET /movies/<ind:id>

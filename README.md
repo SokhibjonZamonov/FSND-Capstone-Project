@@ -150,4 +150,4 @@ API returns the following errors in the JSON format:
 }
 ```
 ### Testing
-To run tests with RBAC, import [collection]() in [Postman](https://www.postman.com/)
+To run tests with RBAC, import [collection](https://github.com/SokhibjonZamonov/FSND-Capstone-Project/blob/master/API_README.md) in [Postman](https://www.postman.com/)

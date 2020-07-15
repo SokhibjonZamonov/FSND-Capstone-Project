@@ -28,8 +28,10 @@ def create_app(test_config=None):
   # Actors' section
   
   # List of all actors
+
   @app.route('/actors', methods = ['GET'])
-  def get_all_actors():
+  @requires_auth(permission='get:actors')
+  def get_all_actors(payload):
   	actors = Actor.query.all()
 
   	if(len(actors) == 0):
@@ -70,7 +72,8 @@ def create_app(test_config=None):
 
   # Return actors by id
   @app.route('/actors/<int:id>', methods = ['GET'])
-  def get_actor_by_id(id):
+  @requires_auth(permission='get:actors')
+  def get_actor_by_id(payload, id):
   	actor = Actor.query.filter(Actor.id == id).one_or_none()
 
   	if(actor is None):
@@ -138,7 +141,8 @@ def create_app(test_config=None):
 
   # Get all movies
   @app.route('/movies', methods = ['GET'])
-  def get_movies():
+  @requires_auth(permission='get:movies')
+  def get_movies(payload):
   	movies = Movie.query.order_by(Movie.id).all()
 
   	if(len(movies) == 0):
@@ -178,7 +182,8 @@ def create_app(test_config=None):
 
   # Get a movie by id
   @app.route('/movies/<int:id>', methods = ['GET'])
-  def get_movie_by_id(id):
+  @requires_auth(permission='get:movies')
+  def get_movie_by_id(payload,id):
   	movie = Movie.query.filter(Movie.id == id).one_or_none()
 
   	if movie is None:

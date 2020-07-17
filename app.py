@@ -11,12 +11,14 @@ app = Flask(__name__)
 
 setup_db(app)
 
+
 @app.route('/', methods=['GET'])
 def home_page():
     return render_template('main.html')
 # Actors' section
 
 # List of all actors
+
 
 @app.route('/actors', methods=['GET'])
 @requires_auth(permission='get:actors')
@@ -33,6 +35,7 @@ def get_all_actors(payload):
         "success": True,
         "actors": list_actors
     })
+
 
 @app.route('/actors', methods=['POST'])
 @requires_auth(permission='post:actors')
@@ -67,9 +70,10 @@ def add_new_actors(payload):
 
 # Return actors by id
 
+
 @app.route('/actors/<int:id>', methods=['GET'])
 @requires_auth(permission='get:actors')
-def get_actor_by_id(payload,id):
+def get_actor_by_id(payload, id):
     actor = Actor.query.filter(Actor.id == id).one_or_none()
 
     if(actor is None):
@@ -84,9 +88,10 @@ def get_actor_by_id(payload,id):
 
 # Delete actor by id
 
+
 @app.route('/actors/<int:id>', methods=['DELETE'])
 @requires_auth(permission='delete:actors')
-def delete_actor(payload,id):
+def delete_actor(payload, id):
     try:
         deleting_actor = Actor.query.filter(Actor.id == id).one_or_none()
 
@@ -101,9 +106,10 @@ def delete_actor(payload,id):
 
 # Updating actor info by id
 
+
 @app.route('/actors/<int:id>', methods=['PATCH'])
 @requires_auth(permission='patch:actors')
-def update_actor(payload,id):
+def update_actor(payload, id):
     existing_actor = Actor.query.filter(Actor.id == id).one_or_none()
 
     if existing_actor is None:
@@ -136,6 +142,7 @@ def update_actor(payload,id):
 
 # Get all movies
 
+
 @app.route('/movies', methods=['GET'])
 @requires_auth(permission='get:movies')
 def get_movies(payload):
@@ -153,6 +160,8 @@ def get_movies(payload):
     })
 
 # Posting a movie
+
+
 @app.route('/movies', methods=['POST'])
 @requires_auth(permission='post:movies')
 def add_movie(payload):
@@ -180,9 +189,10 @@ def add_movie(payload):
 
 # Get a movie by id
 
+
 @app.route('/movies/<int:id>', methods=['GET'])
 @requires_auth(permission='get:movies')
-def get_movie_by_id(payload,id):
+def get_movie_by_id(payload, id):
     movie = Movie.query.filter(Movie.id == id).one_or_none()
 
     if movie is None:
@@ -194,9 +204,11 @@ def get_movie_by_id(payload,id):
     })
 
 # Delete a movie by id
+
+
 @app.route('/movies/<int:id>', methods=['DELETE'])
 @requires_auth(permission='delete:movies')
-def delete_movie(payload,id):
+def delete_movie(payload, id):
     try:
         deleting_movie = Movie.query.filter(Movie.id == id).one_or_none()
 
@@ -210,9 +222,11 @@ def delete_movie(payload,id):
         abort(422)
 
 # Update a movie by id
+
+
 @app.route('/movies/<int:id>', methods=['PATCH'])
 @requires_auth(permission='patch:movies')
-def update_movie(payload,id):
+def update_movie(payload, id):
     existing_movie = Movie.query.filter(Movie.id == id).one_or_none()
 
     if existing_movie is None:
@@ -239,6 +253,8 @@ def update_movie(payload,id):
     })
 
 # Error Handling
+
+
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
@@ -247,6 +263,7 @@ def unprocessable(error):
         "message": "unprocessable"
     }), 422
 
+
 @app.errorhandler(404)
 def not_found(error):
     return jsonify({
@@ -254,6 +271,7 @@ def not_found(error):
         "error": 404,
         "message": "resource not found"
     }), 404
+
 
 @app.errorhandler(AuthError)
 def auth_error(error):

@@ -7,6 +7,7 @@ from models import setup_db, Movie, Actor
 
 JWT_TOKEN = 'token'
 
+
 class CapstoneTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
 
@@ -15,10 +16,10 @@ class CapstoneTestCase(unittest.TestCase):
         self.app = app
         self.client = self.app.test_client
         self.database_name = "capstone_test"
-        self.database_path = "postgres://{}:{}@{}/{}".format('postgres', 'postgres2001', 'localhost:5432', self.database_name)
+        self.database_path = "postgres://{}:{}@{}/{}".format(
+            'postgres', 'postgres2001', 'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
-                
         self.new_actor = {
             "first_name": "Jennifer",
             "last_name": "Aniston",
@@ -33,20 +34,19 @@ class CapstoneTestCase(unittest.TestCase):
         }
 
         self.new_movie1 = {
-        "title": "Once Upon a Time in Hollywood",
-        "release_date": "7/24/2019",
-        "director": "Quentin Tarantino"
+            "title": "Once Upon a Time in Hollywood",
+            "release_date": "7/24/2019",
+            "director": "Quentin Tarantino"
         }
 
         self.edit_actor = {
-        "age": 82
+            "age": 82
         }
 
         self.edit_movie = {
-        "title": "Casablanca 1"
+            "title": "Casablanca 1"
         }
 
-		    
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -58,19 +58,19 @@ class CapstoneTestCase(unittest.TestCase):
 
     # Tests for GET requests (actors)
     def test_actors(self):
-    	req=self.client().get('/actors', headers={
+        req = self.client().get('/actors', headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
-    	data=json.loads(req.data)
+        })
+        data = json.loads(req.data)
 
-    	self.assertEqual(req.status_code, 200)
-    	self.assertEqual(data['success'], True)
-    	self.assertTrue(data['actors'])
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actors'])
 
     def test_actors_by_id(self):
         req = self.client().get('/actors/1', headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
+        })
         data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
@@ -79,9 +79,9 @@ class CapstoneTestCase(unittest.TestCase):
 
     # Test for POST request (actors)
     def test_adding_actors(self):
-        req = self.client().post('/actors',json = self.new_actor, headers={
+        req = self.client().post('/actors', json=self.new_actor, headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
+        })
         data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
@@ -89,9 +89,9 @@ class CapstoneTestCase(unittest.TestCase):
 
     # Test for PATCH request (actors)
     def test_updating_actors(self):
-        req = self.client().patch('/actors/1',json=self.edit_actor,headers={
+        req = self.client().patch('/actors/1', json=self.edit_actor, headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            }, )
+        }, )
         data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
@@ -102,7 +102,7 @@ class CapstoneTestCase(unittest.TestCase):
     def test_delete_actor(self):
         req = self.client().delete('/actors/8', headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
+        })
         data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
@@ -111,42 +111,42 @@ class CapstoneTestCase(unittest.TestCase):
 
     # Test for POST requests (movies)
     def test_add_movies(self):
-        req=self.client().post('/movies',json=self.new_movie, headers={
+        req = self.client().post('/movies', json=self.new_movie, headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
-        data=json.loads(req.data)
+        })
+        data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
         self.assertEqual(data['success'], True)
 
     # Tests for GET requests (movies)
     def test_get_movies(self):
-        req=self.client().get('/movies', headers={
+        req = self.client().get('/movies', headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
-        data=json.loads(req.data)
+        })
+        data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['movies'])
 
     def test_movies_by_id(self):
-        req=self.client().get('/movies/10', headers={
+        req = self.client().get('/movies/10', headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
-        data=json.loads(req.data)
+        })
+        data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['movie'])
 
-
     # Test for PATCH request (movies)
+
     def test_update_movie(self):
-        req=self.client().patch('/movies/5',json=self.edit_movie,headers={
+        req = self.client().patch('/movies/5', json=self.edit_movie, headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
-        data=json.loads(req.data)
+        })
+        data = json.loads(req.data)
 
         self.assertEqual(req.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -154,18 +154,16 @@ class CapstoneTestCase(unittest.TestCase):
 
     # Test for DELETE request (movies)
     def test_delete_movies(self):
-        req=self.client().delete('/movies/6', headers={
+        req = self.client().delete('/movies/6', headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
-            })
-        data=json.loads(req.data)
-        
+        })
+        data = json.loads(req.data)
+
         self.assertEqual(req.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['deleted_movie_id'], 6)
 
 
-
-    		
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

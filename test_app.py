@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app import app
 from models import setup_db, Movie, Actor
 
-JWT_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlJBaV9PX0ViTHBmLUNEZUtWUUZkSiJ9.eyJpc3MiOiJodHRwczovL25kZnMyMDIwLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw1ZjA4NDE2OGFlZGIzNzAwMTM4NmIzNWYiLCJhdWQiOiJtb3ZpZV9kaXJlY3RvcnMiLCJpYXQiOjE1OTQ5MTgwMTIsImV4cCI6MTU5NDkyNTIxMiwiYXpwIjoidkg3NndZeUJqU085eDJ6bFNGMGhuWFVFZ2hLb1FRc3kiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.DdImh0asi4VC2Ky4CMgS3dB0jgSr9dsY4_b8kIhK2_-p2UNO81onOXILd1k4TtsXMIaOPqisyjchoGXMv-6tn8t82-gAdda-GOLSdXi-l2G8olAH2ZzRJLDvvn7JcdtlZHN6NDORq-4wr46iFt1vXcvqGxCMuZZqswv5Bx1jedikAtjoGxCfl1ySVKbwD2xZqSaZzfkaQEFkm9YM1O-psvMLpmZoHtrSfd6kTls_zIVpD2zuGYmGwAu5MrqZJQag-usOW_1yMiYBEmQ-TGjSJiCfdzr7ynmv8xNL8LxXYlk5N8cVqCg525CNS0Pp3CYoKcP79IJlgdLL0iwEdvuWXg'
+JWT_TOKEN = 'token'
 
 class CapstoneTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
@@ -27,15 +27,23 @@ class CapstoneTestCase(unittest.TestCase):
         }
 
         self.new_movie = {
-            "title": "Casablanca",
-            "release_date": "11/26/1942",
-            "director": "Michael Curtiz"
+            "title": "How to Train Your Dragon",
+            "release_date": "1/3/2019",
+            "director": "Dean DeBlois"
         }
 
-        
-        self.headers = {
-            'Content-Type': 'application/json',
-            'Authorization': JWT_TOKEN
+        self.new_movie1 = {
+        "title": "Once Upon a Time in Hollywood",
+        "release_date": "7/24/2019",
+        "director": "Quentin Tarantino"
+        }
+
+        self.edit_actor = {
+        "age": 82
+        }
+
+        self.edit_movie = {
+        "title": "Casablanca 1"
         }
 
 		    
@@ -48,15 +56,115 @@ class CapstoneTestCase(unittest.TestCase):
     Write at least one test for each test for successful operation and for expected errors.
     """
 
-    # test for success behavior (actors)
+    # Tests for GET requests (actors)
     def test_actors(self):
-    	req=self.client().get('/actors', self.headers)
+    	req=self.client().get('/actors', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
     	data=json.loads(req.data)
 
     	self.assertEqual(req.status_code, 200)
     	self.assertEqual(data['success'], True)
     	self.assertTrue(data['actors'])
-    
+
+    def test_actors_by_id(self):
+        req = self.client().get('/actors/1', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
+
+    # Test for POST request (actors)
+    def test_adding_actors(self):
+        req = self.client().post('/actors',json = self.new_actor, headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    # Test for PATCH request (actors)
+    def test_updating_actors(self):
+        req = self.client().patch('/actors/1',json=self.edit_actor,headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            }, )
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['actor'])
+
+    # Test for DELETE request (actors)
+    def test_delete_actor(self):
+        req = self.client().delete('/actors/8', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['deleted_actor_id'], 8)
+
+    # Test for POST requests (movies)
+    def test_add_movies(self):
+        req=self.client().post('/movies',json=self.new_movie, headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data=json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    # Tests for GET requests (movies)
+    def test_get_movies(self):
+        req=self.client().get('/movies', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data=json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['movies'])
+
+    def test_movies_by_id(self):
+        req=self.client().get('/movies/10', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data=json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['movie'])
+
+
+    # Test for PATCH request (movies)
+    def test_update_movie(self):
+        req=self.client().patch('/movies/5',json=self.edit_movie,headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data=json.loads(req.data)
+
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['movie'])
+
+    # Test for DELETE request (movies)
+    def test_delete_movies(self):
+        req=self.client().delete('/movies/6', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+            })
+        data=json.loads(req.data)
+        
+        self.assertEqual(req.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['deleted_movie_id'], 6)
+
+
+
     		
 # Make the tests conveniently executable
 if __name__ == "__main__":

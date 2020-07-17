@@ -163,6 +163,58 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(data['deleted_movie_id'], 6)
 
+    # Tests for failures (actors)
+    def test_not_found_actors(self):
+        req = self.client().delete('/actors/1000', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+        })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 404)
+
+    def test_failed_del_actors(self):
+        req = self.client().delete('/actors/1000', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+        })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 422)
+
+
+    def test_failed_add_actors(self):
+        req = self.client().post('/actors', json={"title": unknown}, headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+        })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 422)
+
+
+    # Tests for failures (movies)
+    def test_not_found_movies(self):
+        req = self.client().delete('/movies/1000', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+        })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 404)
+
+    def test_failed_del_movies(self):
+        req = self.client().delete('/movies/1000', headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+        })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 422)
+
+    def test_failed_add_movies(self):
+        req = self.client().post('/movies', json={"first_name": unknown}, headers={
+            "Authorization": "Bearer {}".format(JWT_TOKEN)
+        })
+        data = json.loads(req.data)
+
+        self.assertEqual(req.status_code, 422)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

@@ -182,7 +182,7 @@ class CapstoneTestCase(unittest.TestCase):
 
 
     def test_failed_add_actors(self):
-        req = self.client().post('/actors', json={"title": unknown}, headers={
+        req = self.client().post('/actors', json={"first_name": unknown}, headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
         })
         data = json.loads(req.data)
@@ -208,7 +208,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(req.status_code, 422)
 
     def test_failed_add_movies(self):
-        req = self.client().post('/movies', json={"first_name": unknown}, headers={
+        req = self.client().post('/movies', json={"title": unknown}, headers={
             "Authorization": "Bearer {}".format(JWT_TOKEN)
         })
         data = json.loads(req.data)
